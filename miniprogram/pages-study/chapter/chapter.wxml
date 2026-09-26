@@ -1,0 +1,46 @@
+<!-- pages-study/chapter/chapter.wxml -->
+<view class="page" wx:if="{{subject}}">
+  <view class="head-card" style="background: linear-gradient(135deg, {{subject.color}}dd, {{subject.color}})">
+    <text class="head-name">{{subject.name}}</text>
+    <text class="head-desc">{{subject.desc}}</text>
+    <view class="head-progress">
+      <view class="head-bar">
+        <view class="head-fill" style="width: {{percent}}%"></view>
+      </view>
+      <text class="head-stat">已掌握 {{mastered}} / {{total}}（{{percent}}%）</text>
+    </view>
+  </view>
+
+  <button class="btn-primary mb-16" bindtap="onStartAll">顺序学习全部 {{total}} 个考点</button>
+
+  <view class="filter-row">
+    <text class="filter-label">按重要度快筛：</text>
+    <text class="filter-chip" bindtap="onFilterLevel" data-level="S">必考 S</text>
+    <text class="filter-chip" bindtap="onFilterLevel" data-level="A">高频 A</text>
+    <text class="filter-chip" bindtap="onFilterLevel" data-level="B">常考 B</text>
+  </view>
+
+  <view class="section-head">
+    <text class="section-title">章节（{{chapters.length}}）</text>
+  </view>
+
+  <view
+    wx:for="{{chapters}}"
+    wx:key="name"
+    class="chapter-card"
+    bindtap="onChapterTap"
+    data-index="{{item.index}}"
+  >
+    <view class="flex-between">
+      <text class="chapter-name">{{item.name}}</text>
+      <text class="text-xs text-3">{{item.done}}/{{item.count}} ›</text>
+    </view>
+    <view class="chapter-bar">
+      <view class="chapter-fill" style="width: {{item.percent}}%; background: {{subject.color}}"></view>
+    </view>
+    <view class="chapter-meta">
+      <text class="text-xs text-3">共 {{item.count}} 个考点</text>
+      <text wx:if="{{item.sCount}}" class="tag" style="background:#ffeceb;color:#e8453c;margin-left:12rpx">{{item.sCount}} 个必考</text>
+    </view>
+  </view>
+</view>

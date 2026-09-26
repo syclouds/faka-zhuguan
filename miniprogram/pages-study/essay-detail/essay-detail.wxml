@@ -1,0 +1,118 @@
+<!-- pages-study/essay-detail/essay-detail.wxml -->
+<view class="page" wx:if="{{essay}}">
+  <!-- 标题区 -->
+  <view class="head">
+    <view class="flex-between">
+      <text class="head-topic">{{essay.topic}}</text>
+      <text class="head-fav {{fav ? 'on' : ''}}" bindtap="onFav">{{fav ? '★ 已收藏' : '☆ 收藏'}}</text>
+    </view>
+    <text class="head-title">{{essay.title}}</text>
+    <text class="head-level" style="color:{{levelMap[essay.level].color}}">{{levelMap[essay.level].label}}</text>
+  </view>
+
+  <!-- ========== 背诵模式 ========== -->
+  <block wx:if="{{mode === 'recite'}}">
+    <view class="recite-card">
+      <text class="recite-step">第 {{reciteStep + 1}} / {{essay.frame.length}} 步</text>
+      <text class="recite-k">{{essay.frame[reciteStep].k}}</text>
+
+      <view wx:if="{{hideFrame}}" class="recite-hint">
+        <text>先在草稿纸上写下这一步要说什么，再点击查看</text>
+      </view>
+      <view wx:else class="recite-v">
+        <text>{{essay.frame[reciteStep].v}}</text>
+      </view>
+    </view>
+
+    <button wx:if="{{hideFrame}}" class="btn-primary" bindtap="onReveal">查看这一步</button>
+    <view wx:else class="action-sub">
+      <text class="link-btn" bindtap="onPrevStep">← 上一步</text>
+      <text class="link-btn" bindtap="onNextStep">下一步 →</text>
+    </view>
+
+    <view class="action-sub mt-24">
+      <text class="link-btn" bindtap="onExitRecite">退出背诵模式</text>
+      <text class="link-btn" bindtap="onCopy">复制模板</text>
+    </view>
+  </block>
+
+  <!-- ========== 详情模式 ========== -->
+  <block wx:else>
+    <button class="btn-primary mb-16" bindtap="onStartRecite">开始框架背诵</button>
+
+    <!-- 答题框架 -->
+    <view class="card">
+      <text class="sec-title">答题框架</text>
+      <view wx:for="{{essay.frame}}" wx:key="k" class="frame-row">
+        <view class="frame-idx">{{index + 1}}</view>
+        <view class="flex-1">
+          <text class="frame-k">{{item.k}}</text>
+          <text class="frame-v">{{item.v}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 万能金句 -->
+    <view class="card">
+      <view class="flex-between mb-sm">
+        <text class="sec-title">万能金句（点击标记已背）</text>
+        <text class="text-xs text-3">已背 {{phrasesChecked.length}} 条</text>
+      </view>
+      <view
+        wx:for="{{essay.phrases}}"
+        wx:key="*this"
+        class="phrase-row"
+        bindtap="onTogglePhrase"
+        data-idx="{{index}}"
+      >
+        <text class="phrase-box {{phrasesChecked[index] ? 'checked' : ''}}">{{phrasesChecked[index] ? '✓' : ''}}</text>
+        <text class="phrase-text {{phrasesChecked[index] ? 'done' : ''}}">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 可替换槽位 -->
+    <view class="card">
+      <text class="sec-title">可替换槽位（考场上按题干替换）</text>
+      <view wx:for="{{essay.fill}}" wx:key="*this" class="fill-row">
+        <text class="fill-dot">▸</text>
+        <text class="fill-text">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 示范段落 -->
+    <view class="card">
+      <text class="sec-title">示范段落</text>
+      <text class="sample-text">{{essay.sample}}</text>
+    </view>
+
+    <!-- 易错 -->
+    <view class="trick-box">
+      <text class="trick-label">常见失分点</text>
+      <text class="trick-text">{{essay.trap}}</text>
+    </view>
+
+    <!-- 草稿练习 -->
+    <view class="card">
+      <view class="flex-between mb-sm">
+        <text class="sec-title">答题草稿练习</text>
+        <text class="text-xs text-3">{{draftCount}} 字</text>
+      </view>
+      <textarea
+        class="draft-area"
+        value="{{draft}}"
+        bindinput="onDraftInput"
+        placeholder="按框架把这道题写一遍，控制在 600—800 字"
+        maxlength="2000"
+        auto-height
+      />
+      <view class="action-sub">
+        <text class="link-btn" bindtap="onGenerateDraft">生成框架草稿</text>
+        <text class="link-btn" bindtap="onCopy">复制完整模板</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="footer-tip safe-bottom">
+    <text>论述题评分看"政治方向 + 论证层次 + 联系实际"，框架完整比辞藻华丽更重要</text>
+  </view>
+</view>

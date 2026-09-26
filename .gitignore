@@ -1,0 +1,21 @@
+# 依赖（绝不入库）
+node_modules/
+faka-android/node_modules/
+
+# PDF 抽取中间产物（合规红线：绝不入库）
+raw/
+
+# Android Gradle 构建输出与本地配置（源码壳 android/ 本身要入库）
+faka-android/android/app/build/
+faka-android/android/.gradle/
+faka-android/android/local.properties
+faka-android/android/.idea/
+faka-android/android/capacitor-cordova-android-plugins/
+
+# 杂项
+*.log
+.DS_Store
+Thumbs.db
+
+# Vite 临时文件
+faka-android/vite.config.ts.timestamp-*.mjs

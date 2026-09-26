@@ -1,0 +1,143 @@
+@import './scale.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== 深/浅色主题变量（darkMode: 'class'，根元素挂 .dark） ===== */
+:root {
+  --c-bg: #f5f6f8;
+  --c-card: #ffffff;
+  --c-ink: #1f2329;
+  --c-sub: #6b7280;
+  --c-line: #e8eaed;
+  --c-primary: #2b6cf6;
+  --c-primary-weak: #eaf0ff;
+  --c-danger: #e8453c;
+  --c-warn: #ff8f1f;
+  --c-success: #14b45f;
+}
+
+.dark {
+  --c-bg: #101317;
+  --c-card: #1a1f26;
+  --c-ink: #eceff3;
+  --c-sub: #9aa3b0;
+  --c-line: #2a313b;
+  --c-primary: #5b8cff;
+  --c-primary-weak: #1e2a44;
+  --c-danger: #f16a5f;
+  --c-warn: #ffa14d;
+  --c-success: #3ecf80;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    overscroll-behavior-y: none; /* 禁用整页下拉刷新观感 */
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'HarmonyOS Sans SC',
+      'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    line-height: 1.5;
+  }
+
+  /* 输入控件继承主题 */
+  input,
+  textarea,
+  button {
+    font-family: inherit;
+    color: inherit;
+  }
+  textarea,
+  input {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  /* 深色模式下输入框光标与占位符 */
+  ::placeholder {
+    color: var(--c-sub);
+    opacity: 0.7;
+  }
+}
+
+@layer components {
+  /* 通用卡片容器 */
+  .card-box {
+    @apply bg-card rounded-2xl border border-line;
+  }
+
+  /* 主按钮（大号主操作，拇指热区） */
+  .btn-primary {
+    @apply tap no-select w-full rounded-xl bg-primary text-white font-medium flex items-center justify-center;
+  }
+  .btn-primary:active {
+    opacity: 0.85;
+  }
+
+  /* 次级按钮 */
+  .btn-ghost {
+    @apply tap no-select w-full rounded-xl border border-line bg-card text-ink flex items-center justify-center;
+  }
+  .btn-ghost:active {
+    @apply bg-bg;
+  }
+
+  /* 列表项（≥48dp 触摸目标） */
+  .cell {
+    @apply tap no-select w-full flex items-center bg-card px-4 border-b border-line text-left;
+  }
+  .cell:active {
+    @apply bg-bg;
+  }
+  .cell:last-child {
+    border-bottom: none;
+  }
+}
+
+/* 页面进出场（push 时自右滑入；离场守卫弹窗由组件层处理） */
+@keyframes page-in {
+  from {
+    transform: translateX(24%);
+    opacity: 0.4;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.page-enter {
+  animation: page-in 0.22s ease-out;
+}
+
+/* 底部弹层 */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.sheet-in {
+  animation: sheet-up 0.22s ease-out;
+}
+
+/* Toast */
+@keyframes toast-in {
+  from {
+    transform: translate(-50%, 8px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+.toast-in {
+  animation: toast-in 0.18s ease-out;
+}

@@ -1,0 +1,160 @@
+<!-- pages-study/recite/recite.wxml -->
+<view class="page">
+  <!-- 顶部进度 -->
+  <view class="topbar">
+    <view class="topbar-left">
+      <text class="topbar-title">{{title}}</text>
+      <text class="text-xs text-3">{{subtitle}}</text>
+    </view>
+    <text class="topbar-count">{{index + 1}} / {{total}}</text>
+  </view>
+  <view class="topbar-progress">
+    <view class="topbar-fill" style="width: {{progressPercent}}%"></view>
+  </view>
+
+  <!-- 未完成：卡片区 -->
+  <block wx:if="{{!finished && current}}">
+    <!-- 卡片正面 -->
+    <view class="flashcard {{flipped ? 'flipped' : ''}}">
+      <view class="fc-head">
+        <text class="tag" style="background:{{current.subjectColor}}22;color:{{current.subjectColor}}">{{current.subjectShort}}</text>
+        <text class="fc-chapter">{{current.chapter}}</text>
+      </view>
+
+      <text class="fc-title">{{current.title}}</text>
+
+      <!-- 未翻卡：只看标题，自问自答 -->
+      <view wx:if="{{!flipped}}" class="fc-hint">
+        <view class="fc-hint-line"></view>
+        <text class="fc-hint-text">先在心里默述一遍核心与采分点，再点击查看</text>
+        <view class="fc-hint-line"></view>
+      </view>
+
+      <!-- 已翻卡：展示核心与采分点 -->
+      <block wx:else>
+        <view class="fc-core">
+          <text class="fc-core-label">核心</text>
+          <text class="fc-core-text">{{current.core}}</text>
+        </view>
+
+        <view class="fc-section-title">
+          <text>采分点（关键词需能默写）</text>
+        </view>
+
+        <view
+          wx:for="{{current.points}}"
+          wx:key="k"
+          class="point-row"
+        >
+          <text class="point-idx">{{index + 1}}</text>
+          <view class="point-body">
+            <text wx:if="{{!revealAnswer}}" class="point-k blank-hidden">{{item.k}}</text>
+            <text wx:else class="point-k">{{item.k}}</text>
+            <text class="point-v">{{item.v}}</text>
+          </view>
+        </view>
+
+        <view class="fc-section-title">
+          <text>法条 / 依据</text>
+        </view>
+        <view wx:for="{{current.clauses}}" wx:key="*this" class="clause-row">
+          <text class="clause-dot">·</text>
+          <text class="clause-text">{{item}}</text>
+        </view>
+
+        <view class="trick-box">
+          <text class="trick-label">易错提示</text>
+          <text class="trick-text">{{current.trick}}</text>
+        </view>
+      </block>
+    </view>
+
+    <!-- 操作区 -->
+    <view wx:if="{{!flipped}}" class="action-area">
+      <button class="btn-primary" bindtap="onFlip">查看答案</button>
+      <view class="action-sub">
+        <text class="link-btn" bindtap="onCopy">复制内容</text>
+        <text class="link-btn" bindtap="onBackHome">返回首页</text>
+      </view>
+    </view>
+
+    <view wx:else class="action-area">
+      <!-- 默写模式 -->
+      <view class="write-box">
+        <view class="flex-between mb-sm">
+          <text class="write-title">采分点默写自测</text>
+          <text class="text-xs c-blue" bindtap="onToggleAnswer">{{revealAnswer ? '收起答案' : '显示答案'}}</text>
+        </view>
+        <view wx:for="{{blanks}}" wx:key="idx" class="blank-row">
+          <text class="blank-idx">{{item.idx + 1}}</text>
+          <input
+            class="blank-input {{item.checked ? (item.right ? 'ok' : 'bad') : ''}}"
+            value="{{item.input}}"
+            placeholder="写出关键词"
+            placeholder-class="ph"
+            data-idx="{{item.idx}}"
+            bindinput="onBlankInput"
+            disabled="{{revealAnswer}}"
+          />
+          <text wx:if="{{item.checked}}" class="blank-flag {{item.right ? 'ok' : 'bad'}}">{{item.right ? '命中' : '再想想'}}</text>
+        </view>
+        <button wx:if="{{!revealAnswer}}" class="btn-ghost" bindtap="onCheckAll">校验关键词</button>
+      </view>
+
+      <!-- 掌握度标记 -->
+      <view class="mark-row">
+        <view class="mark-btn unknown" bindtap="onMark" data-level="0">
+          <text class="mark-icon">✕</text>
+          <text class="mark-text">没记住</text>
+        </view>
+        <view class="mark-btn fuzzy" bindtap="onMark" data-level="1">
+          <text class="mark-icon">~</text>
+          <text class="mark-text">有点模糊</text>
+        </view>
+        <view class="mark-btn mastered" bindtap="onMark" data-level="2">
+          <text class="mark-icon">✓</text>
+          <text class="mark-text">记住了</text>
+        </view>
+      </view>
+
+      <view class="action-sub">
+        <text class="link-btn" bindtap="prev">← 上一张</text>
+        <text class="link-btn" bindtap="onNext">跳过 →</text>
+      </view>
+    </view>
+
+    <view class="nav-row">
+      <text class="nav-btn" bindtap="prev" wx:if="{{index > 0}}">上一张</text>
+      <text class="nav-btn" bindtap="onFav">收藏本卡</text>
+      <text class="nav-btn" bindtap="onCopy">复制</text>
+    </view>
+  </block>
+
+  <!-- 完成页 -->
+  <block wx:else>
+    <view class="done-box">
+      <view class="done-icon">✓</view>
+      <text class="done-title">本轮完成</text>
+      <text class="done-sub">共学习 {{sessionCount}} 张</text>
+
+      <view class="done-stats">
+        <view class="done-stat">
+          <text class="ds-num c-red">{{sessionStats[0]}}</text>
+          <text class="ds-label">没记住</text>
+        </view>
+        <view class="done-stat">
+          <text class="ds-num c-orange">{{sessionStats[1]}}</text>
+          <text class="ds-label">模糊</text>
+        </view>
+        <view class="done-stat">
+          <text class="ds-num c-green">{{sessionStats[2]}}</text>
+          <text class="ds-label">已掌握</text>
+        </view>
+      </view>
+
+      <button class="btn-primary mt-lg" bindtap="onRedoWrong">重做错题</button>
+      <button class="btn-ghost mt-sm" bindtap="onRestart">再来一轮</button>
+      <text class="link-btn mt-sm" bindtap="onBackHome">返回首页</text>
+    </view>
+  </block>
+</view>

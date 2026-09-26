@@ -1,0 +1,65 @@
+/* pages-study/chapter/chapter.wxss */
+.page { padding: 20rpx 24rpx 60rpx; }
+
+.head-card {
+  border-radius: var(--r-lg);
+  padding: 36rpx 32rpx;
+  color: #fff;
+  margin-bottom: 24rpx;
+  box-shadow: 0 10rpx 26rpx rgba(0, 0, 0, 0.12);
+}
+.head-name { display: block; font-size: 44rpx; font-weight: 700; }
+.head-desc { display: block; font-size: var(--fs-sm); opacity: 0.9; margin-top: 8rpx; }
+.head-progress { margin-top: 28rpx; }
+.head-bar {
+  height: 14rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+}
+.head-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 999rpx;
+  transition: width 0.3s ease;
+}
+.head-stat { font-size: var(--fs-xs); opacity: 0.9; margin-top: 10rpx; display: block; }
+
+.mb-16 { margin-bottom: 24rpx; }
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+.filter-label { font-size: var(--fs-sm); color: var(--c-text-2); }
+.filter-chip {
+  font-size: var(--fs-sm);
+  color: var(--c-primary);
+  background: #fff;
+  border: 2rpx solid #dbe5fb;
+  border-radius: 999rpx;
+  padding: 8rpx 22rpx;
+}
+
+.section-head { margin: 8rpx 4rpx 16rpx; }
+.section-title { font-size: var(--fs-lg); font-weight: 600; }
+
+.chapter-card {
+  background: #fff;
+  border-radius: var(--r-md);
+  padding: 26rpx 24rpx;
+  margin-bottom: 18rpx;
+}
+.chapter-name { font-size: 30rpx; font-weight: 600; }
+.chapter-bar {
+  height: 10rpx;
+  border-radius: 999rpx;
+  background: #eef1f7;
+  margin: 18rpx 0 14rpx;
+  overflow: hidden;
+}
+.chapter-fill { height: 100%; border-radius: 999rpx; transition: width 0.3s; }
+.chapter-meta { display: flex; align-items: center; }

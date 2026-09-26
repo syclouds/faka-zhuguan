@@ -1,0 +1,60 @@
+# APK 云构建（本机零工具链，ARCH §8.2）
+# 触发：faka-android/ 或 shared/ 有推送 / 手动 dispatch
+# 产物：debug APK（GitHub Actions artifact，见 docs/APK-出包指南.md）
+name: build-apk
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'faka-android/**'
+      - 'shared/**'
+      - '.github/workflows/build-apk.yml'
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: faka-android
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          # package-lock.json 已入库，npm ci 按 lockfile 精确安装（缓存走 npm）
+          cache: 'npm'
+          cache-dependency-path: faka-android/package-lock.json
+
+      - name: Install deps
+        run: |
+          npm config set registry https://registry.npmmirror.com
+          npm ci --no-audit --no-fund
+
+      - name: Build web（tsc + vite）
+        run: npm run build
+
+      - name: Capacitor sync
+        run: npx cap sync android
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Grant gradlew permission
+        run: chmod +x android/gradlew
+
+      - name: Assemble debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: faka-zhuguan-debug-apk
+          path: faka-android/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error

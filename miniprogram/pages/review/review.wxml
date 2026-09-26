@@ -1,0 +1,94 @@
+<!-- pages/review/review.wxml -->
+<view class="page">
+  <!-- 概览 -->
+  <view class="overview">
+    <view class="ov-item">
+      <text class="ov-num c-red">{{summary.review}}</text>
+      <text class="ov-label">待复习</text>
+    </view>
+    <view class="ov-item">
+      <text class="ov-num c-blue">{{summary.fresh}}</text>
+      <text class="ov-label">待新学</text>
+    </view>
+    <view class="ov-item">
+      <text class="ov-num c-orange">{{summary.wrong}}</text>
+      <text class="ov-label">错题</text>
+    </view>
+    <view class="ov-item">
+      <text class="ov-num c-green">{{summary.mastered}}</text>
+      <text class="ov-label">已掌握</text>
+    </view>
+  </view>
+
+  <!-- Tab -->
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === item.key ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-key="{{item.key}}"
+    >
+      <text class="tab-text">{{item.name}}</text>
+      <view wx:if="{{activeTab === item.key}}" class="tab-line"></view>
+    </view>
+  </view>
+
+  <!-- 今日提示 -->
+  <view wx:if="{{activeTab === 'today'}}" class="tip-row">
+    <text class="text-xs text-3">每日新学上限 {{settings.dailyNew}} 张，点击右侧调整</text>
+    <text class="text-xs c-blue" bindtap="onSetDailyNew">调整 ›</text>
+  </view>
+
+  <!-- 全部：按科目分组 -->
+  <block wx:if="{{activeTab === 'all'}}">
+    <view
+      wx:for="{{grouped}}"
+      wx:key="id"
+      class="group-card"
+      bindtap="onSubjectTap"
+      data-id="{{item.id}}"
+    >
+      <view class="group-dot" style="background:{{item.color}}"></view>
+      <view class="flex-1">
+        <text class="group-name">{{item.name}}</text>
+        <text class="text-xs text-3">{{item.mastered}} / {{item.count}} 已掌握</text>
+      </view>
+      <text class="text-3">›</text>
+    </view>
+  </block>
+
+  <!-- 列表 -->
+  <block wx:else>
+    <view wx:if="{{list.length === 0}}" class="empty-box">
+      <text>{{activeTab === 'wrong' ? '暂无错题，继续保持' : activeTab === 'fav' ? '还没有收藏考点' : '今日任务已清空'}}</text>
+    </view>
+
+    <block wx:else>
+      <button class="btn-primary mb-16" bindtap="onStart">
+        开始背诵（{{list.length}} 张）
+      </button>
+
+      <view
+        wx:for="{{list}}"
+        wx:key="id"
+        class="list-item"
+        bindtap="onCardTap"
+        data-id="{{item.id}}"
+      >
+        <view class="li-left">
+          <text class="li-subject" style="background:{{item.subjectColor}}22;color:{{item.subjectColor}}">{{item.subjectShort}}</text>
+        </view>
+        <view class="flex-1">
+          <text class="li-title">{{item.title}}</text>
+          <text class="li-core">{{item.core}}</text>
+        </view>
+        <text class="li-arrow">›</text>
+      </view>
+    </block>
+  </block>
+
+  <view class="footer-tip safe-bottom">
+    <text>连续学习 {{summary.mastered}} / {{summary.total}} 张已掌握</text>
+  </view>
+</view>

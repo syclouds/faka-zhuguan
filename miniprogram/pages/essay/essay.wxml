@@ -1,0 +1,55 @@
+<!-- pages/essay/essay.wxml -->
+<view class="page">
+  <view class="page-head">
+    <text class="page-title">论述题模板</text>
+    <text class="page-sub">主观题第一题（约 35 分）：框架 + 分论点 + 金句，背下来直接套用</text>
+  </view>
+
+  <!-- 主题筛选 -->
+  <scroll-view class="topic-scroll" scroll-x>
+    <view
+      wx:for="{{topics}}"
+      wx:key="*this"
+      class="topic-chip {{activeTopic === item ? 'active' : ''}}"
+      bindtap="onTopicChange"
+      data-topic="{{item}}"
+    >
+      {{item}}
+    </view>
+  </scroll-view>
+
+  <!-- 模板列表 -->
+  <view
+    wx:for="{{list}}"
+    wx:key="id"
+    class="essay-card"
+    bindtap="onDetail"
+    data-id="{{item.id}}"
+  >
+    <view class="flex-between">
+      <view class="flex" style="align-items:center">
+        <text class="ec-topic">{{item.topic}}</text>
+        <text class="ec-level" style="color:{{levelMap[item.level].color}}">{{levelMap[item.level].label}}</text>
+      </view>
+      <text wx:if="{{item.fav}}" class="ec-fav">已收藏</text>
+    </view>
+
+    <text class="ec-title">{{item.title}}</text>
+
+    <view class="ec-frame">
+      <view wx:for="{{item.frame}}" wx:for-item="f" wx:key="k" class="ec-frame-row">
+        <text class="ec-frame-k">{{f.k}}</text>
+        <text class="ec-frame-v">{{f.v}}</text>
+      </view>
+    </view>
+
+    <view class="ec-foot">
+      <text class="text-xs text-3">金句 {{item.phrases.length}} 条 · 槽位 {{item.fill.length}} 个</text>
+      <text class="ec-btn" catchtap="onRecite" data-id="{{item.id}}">开始背诵 ›</text>
+    </view>
+  </view>
+
+  <view class="footer-tip safe-bottom">
+    <text>论述题答题建议：先列框架再落笔，每个分论点控制在 100—150 字</text>
+  </view>
+</view>

@@ -1,0 +1,124 @@
+<!-- pages/mine/mine.wxml -->
+<view class="page">
+  <!-- 学习总览 -->
+  <view class="summary">
+    <view class="sum-left">
+      <text class="sum-percent">{{percent}}%</text>
+      <text class="sum-label">总体掌握度</text>
+    </view>
+    <view class="sum-right">
+      <view class="sum-row">
+        <text class="sum-row-label">已掌握</text>
+        <text class="sum-row-val c-green">{{levelStats.mastered}}</text>
+      </view>
+      <view class="sum-row">
+        <text class="sum-row-label">模糊</text>
+        <text class="sum-row-val c-orange">{{levelStats.fuzzy}}</text>
+      </view>
+      <view class="sum-row">
+        <text class="sum-row-label">未掌握</text>
+        <text class="sum-row-val c-red">{{levelStats.unknown}}</text>
+      </view>
+      <view class="sum-row">
+        <text class="sum-row-label">未学习</text>
+        <text class="sum-row-val">{{levelStats.fresh}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 学习趋势 -->
+  <view class="card">
+    <view class="flex-between">
+      <text class="sec-title">近 7 天学习量</text>
+      <text class="text-xs text-3">连续 {{streak}} 天</text>
+    </view>
+    <view class="chart">
+      <view wx:for="{{trend}}" wx:key="label" class="chart-col">
+        <text class="chart-count">{{item.count}}</text>
+        <view class="chart-bar-wrap">
+          <view class="chart-bar" style="height: {{item.height}}%"></view>
+        </view>
+        <text class="chart-label">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据 -->
+  <view class="card">
+    <text class="sec-title">学习数据</text>
+    <view class="data-row">
+      <text class="data-label">累计学习张次</text>
+      <text class="data-val">{{stats.totalCards || 0}}</text>
+    </view>
+    <view class="data-row">
+      <text class="data-label">考点总数</text>
+      <text class="data-val">{{total}}</text>
+    </view>
+    <view class="data-row">
+      <text class="data-label">自定义考点</text>
+      <text class="data-val">{{userCards.length}}</text>
+    </view>
+  </view>
+
+  <!-- 设置 -->
+  <view class="card">
+    <text class="sec-title">背诵设置</text>
+    <view class="set-row" bindtap="onSettingTap" data-key="dailyNew">
+      <text class="set-label">每日新学上限</text>
+      <text class="set-val">{{settings.dailyNew}} 张 ›</text>
+    </view>
+    <view class="set-row" bindtap="onSettingTap" data-key="dailyReview">
+      <text class="set-label">每日复习上限</text>
+      <text class="set-val">{{settings.dailyReview >= 9999 ? '不限' : settings.dailyReview + ' 张'}} ›</text>
+    </view>
+    <view class="set-row" bindtap="onSettingTap" data-key="showKeywordTip">
+      <text class="set-label">背诵卡关键词默认隐藏</text>
+      <switch checked="{{settings.showKeywordTip}}" color="#2B6CF6" />
+    </view>
+  </view>
+
+  <!-- 功能 -->
+  <view class="card">
+    <text class="sec-title">学习工具</text>
+    <view class="set-row" bindtap="onWrongBook">
+      <text class="set-label">错题本</text>
+      <text class="set-val">去重做 ›</text>
+    </view>
+    <view class="set-row" bindtap="onFavorites">
+      <text class="set-label">我的收藏</text>
+      <text class="set-val">查看 ›</text>
+    </view>
+    <view class="set-row" bindtap="onAddCard">
+      <text class="set-label">新增自定义考点</text>
+      <text class="set-val">添加 ›</text>
+    </view>
+  </view>
+
+  <!-- 云同步 -->
+  <view class="card">
+    <text class="sec-title">数据同步</text>
+    <view class="cloud-row">
+      <view class="cloud-dot {{cloudReady ? 'ok' : ''}}"></view>
+      <text class="cloud-text">{{cloudReady ? '云开发已启用，可多设备同步学习进度' : '当前为本地模式，进度仅保存在本机'}}</text>
+    </view>
+    <button class="btn-ghost" bindtap="onSync">立即同步进度</button>
+    <text wx:if="{{!cloudReady}}" class="cloud-hint">{{cloudTip}}</text>
+  </view>
+
+  <!-- 其他 -->
+  <view class="card">
+    <view class="set-row" bindtap="onAbout">
+      <text class="set-label">关于本小程序</text>
+      <text class="set-val">›</text>
+    </view>
+    <view class="set-row" bindtap="onReset">
+      <text class="set-label danger">重置学习数据</text>
+      <text class="set-val">›</text>
+    </view>
+  </view>
+
+  <view class="footer-tip safe-bottom">
+    <text>法考主观题速记 v1.0.0</text>
+    <text class="ft-sub">内容依据现行法律法规整理，仅供参考</text>
+  </view>
+</view>

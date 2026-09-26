@@ -1,0 +1,122 @@
+/* 法考主观题速记 — 全局样式
+ * 设计变量集中在 page 上，页面/组件通过 var() 引用
+ * 单位统一 rpx（设计稿 750rpx 宽）
+ */
+page {
+  /* 主色 */
+  --c-primary: #2b6cf6;
+  --c-primary-light: #eaf1ff;
+  --c-primary-dark: #1a52cc;
+
+  /* 语义色（A股习惯：涨红跌绿；此处用于掌握度）
+   * 未掌握=红、模糊=橙、已掌握=绿 */
+  --c-mastered: #14b45f;
+  --c-mastered-bg: #e6f8ee;
+  --c-fuzzy: #ff8f1f;
+  --c-fuzzy-bg: #fff4e5;
+  --c-unknown: #e8453c;
+  --c-unknown-bg: #ffeceb;
+
+  /* 中性色 */
+  --c-text: #1c1f23;
+  --c-text-2: #5c6470;
+  --c-text-3: #9aa3b0;
+  --c-line: #e9edf5;
+  --c-bg: #f4f6fb;
+  --c-card: #ffffff;
+
+  /* 圆角/间距 */
+  --r-sm: 12rpx;
+  --r-md: 20rpx;
+  --r-lg: 32rpx;
+  --sp: 24rpx;
+
+  /* 字号 */
+  --fs-xs: 22rpx;
+  --fs-sm: 24rpx;
+  --fs-base: 28rpx;
+  --fs-lg: 32rpx;
+  --fs-xl: 40rpx;
+  --fs-xxl: 48rpx;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Roboto, sans-serif;
+  font-size: var(--fs-base);
+  color: var(--c-text);
+  background-color: var(--c-bg);
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+view, text, input, textarea, button, scroll-view {
+  box-sizing: border-box;
+}
+
+/* ---------- 通用工具类 ---------- */
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-1 { flex: 1; }
+
+.card {
+  background: var(--c-card);
+  border-radius: var(--r-md);
+  padding: var(--sp);
+  margin-bottom: var(--sp);
+}
+
+.safe-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.text-2 { color: var(--c-text-2); }
+.text-3 { color: var(--c-text-3); }
+.text-sm { font-size: var(--fs-sm); }
+.text-xs { font-size: var(--fs-xs); }
+.bold { font-weight: 600; }
+
+/* 主按钮 */
+.btn-primary {
+  background: linear-gradient(135deg, #4a86ff 0%, #2b6cf6 100%);
+  color: #fff;
+  border-radius: 999rpx;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  line-height: 92rpx;
+  height: 92rpx;
+  text-align: center;
+  border: none;
+}
+.btn-primary::after { border: none; }
+
+.btn-ghost {
+  background: var(--c-primary-light);
+  color: var(--c-primary);
+  border-radius: 999rpx;
+  font-size: var(--fs-base);
+  line-height: 80rpx;
+  height: 80rpx;
+  text-align: center;
+  border: none;
+}
+.btn-ghost::after { border: none; }
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  padding: 4rpx 14rpx;
+  border-radius: 999rpx;
+  background: var(--c-primary-light);
+  color: var(--c-primary);
+}
+.tag-mastered { background: var(--c-mastered-bg); color: var(--c-mastered); }
+.tag-fuzzy { background: var(--c-fuzzy-bg); color: var(--c-fuzzy); }
+.tag-unknown { background: var(--c-unknown-bg); color: var(--c-unknown); }
+
+/* 分割线 */
+.divider { height: 1rpx; background: var(--c-line); margin: 20rpx 0; }
+
+/* 空状态 */
+.empty-box { padding: 120rpx 0; text-align: center; color: var(--c-text-3); }

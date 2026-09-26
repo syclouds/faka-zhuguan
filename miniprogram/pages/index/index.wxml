@@ -1,0 +1,135 @@
+<!-- pages/index/index.wxml -->
+<view class="page">
+  <!-- 倒计时 -->
+  <view class="hero" bindtap="onExamTip">
+    <view wx:if="{{examDate}}" class="hero-inner">
+      <text class="hero-label">距主观题考试还有</text>
+      <view class="hero-days">
+        <text class="hero-num">{{daysLeft}}</text>
+        <text class="hero-unit">天</text>
+      </view>
+      <text class="hero-date">{{examDateText}}</text>
+    </view>
+    <view wx:else class="hero-inner">
+      <text class="hero-label">还没有设置考试日期</text>
+      <text class="hero-set">点击设置倒计时 ›</text>
+    </view>
+    <view class="hero-edit" catchtap="onPickExamDate">
+      <text>修改</text>
+    </view>
+  </view>
+
+  <!-- 今日任务 -->
+  <view class="card today-card">
+    <view class="flex-between">
+      <text class="section-title">今日任务</text>
+      <text class="text-xs text-3">已学 {{todayDone}} 张</text>
+    </view>
+    <view class="task-row">
+      <view class="task-item">
+        <text class="task-num c-red">{{todayReview}}</text>
+        <text class="task-label">待复习</text>
+      </view>
+      <view class="task-split"></view>
+      <view class="task-item">
+        <text class="task-num c-blue">{{todayNew}}</text>
+        <text class="task-label">待新学</text>
+      </view>
+      <view class="task-split"></view>
+      <view class="task-item">
+        <text class="task-num c-green">{{streak}}</text>
+        <text class="task-label">连续天数</text>
+      </view>
+    </view>
+    <button class="btn-primary" bindtap="onStartToday">开始今日背诵</button>
+  </view>
+
+  <!-- 总体进度 -->
+  <view class="card">
+    <view class="flex-between">
+      <text class="section-title">掌握进度</text>
+      <text class="text-xs text-3">{{masteredCount}} / {{totalCount}} 张已掌握</text>
+    </view>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+    </view>
+    <view class="flex-between mt-sm">
+      <text class="text-xs text-3">掌握度 {{progressPercent}}%</text>
+      <text class="text-xs c-blue" bindtap="onSearch">搜考点 ›</text>
+    </view>
+  </view>
+
+  <!-- 科目导航 -->
+  <view class="section-head">
+    <text class="section-title">七大科目 · {{stats.totalCards}} 个考点</text>
+    <text class="text-xs text-3">{{stats.totalSLevel}} 个必考(S级)</text>
+  </view>
+
+  <view
+    wx:for="{{subjects}}"
+    wx:key="id"
+    class="subject"
+  >
+    <view class="subject-head" bindtap="onSubjectTap" data-id="{{item.id}}">
+      <view class="subject-icon" style="background:{{item.color}}">{{item.icon}}</view>
+      <view class="flex-1">
+        <view class="flex-between">
+          <text class="subject-name">{{item.name}}</text>
+          <text class="text-xs text-3">{{item.total}} 个考点 ›</text>
+        </view>
+        <text class="subject-desc">{{item.desc}}</text>
+      </view>
+    </view>
+    <scroll-view class="chapter-scroll" scroll-x enable-flex>
+      <view
+        wx:for="{{item.chapters}}"
+        wx:for-item="ch"
+        wx:for-index="ci"
+        wx:key="name"
+        class="chapter-chip"
+        bindtap="onChapterTap"
+        data-subject-id="{{item.id}}"
+        data-index="{{ci}}"
+      >
+        <text class="chip-text">{{ch.name}}</text>
+        <text class="chip-count">{{ch.count}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 必考速览 -->
+  <view class="section-head">
+    <text class="section-title">必考考点速览</text>
+    <text class="text-xs text-3">按重要度 S 级</text>
+  </view>
+
+  <view
+    wx:for="{{hotCards}}"
+    wx:key="id"
+    class="card hot-card"
+    bindtap="onCardTap"
+    data-id="{{item.id}}"
+  >
+    <view class="flex-between">
+      <text class="tag" style="background:{{item.subjectColor}}22;color:{{item.subjectColor}}">{{item.subjectShort}}</text>
+      <text class="text-xs" style="color:#E8453C">必考</text>
+    </view>
+    <text class="hot-title">{{item.title}}</text>
+    <text class="hot-core">{{item.core}}</text>
+  </view>
+
+  <view class="footer-tip safe-bottom">
+    <text>数据仅供备考参考，以现行法律法规及最新司法解释为准</text>
+  </view>
+
+  <!-- 自定义日期选择器 -->
+  <view wx:if="{{showDatePicker}}" class="mask" bindtap="onDatePickerCancel">
+    <view class="picker-box" catchtap="">
+      <text class="picker-title">选择考试日期</text>
+      <picker mode="date" value="{{examDateText}}" bindchange="onDateChange">
+        <view class="picker-trigger">点击选择日期</view>
+      </picker>
+      <view class="picker-cancel" bindtap="onDatePickerCancel">取消</view>
+    </view>
+  </view>
+</view>

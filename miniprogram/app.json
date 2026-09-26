@@ -1,0 +1,70 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/review/review",
+    "pages/essay/essay",
+    "pages/mine/mine"
+  ],
+  "subpackages": [
+    {
+      "name": "pagesStudy",
+      "root": "pages-study",
+      "pages": [
+        "chapter/chapter",
+        "recite/recite",
+        "essay-detail/essay-detail",
+        "search/search"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": ["pagesStudy"]
+    }
+  },
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "法考主观题",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F4F6FB",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#99999E",
+    "selectedColor": "#2B6CF6",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "考点",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/review/review",
+        "text": "背诵",
+        "iconPath": "assets/icons/card.png",
+        "selectedIconPath": "assets/icons/card-active.png"
+      },
+      {
+        "pagePath": "pages/essay/essay",
+        "text": "论述",
+        "iconPath": "assets/icons/pen.png",
+        "selectedIconPath": "assets/icons/pen-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "assets/icons/mine.png",
+        "selectedIconPath": "assets/icons/mine-active.png"
+      }
+    ]
+  },
+  "usingComponents": true,
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

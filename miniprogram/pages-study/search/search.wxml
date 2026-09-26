@@ -1,0 +1,91 @@
+<!-- pages-study/search/search.wxml -->
+<view class="page">
+  <view class="search-bar">
+    <text class="search-icon">🔍</text>
+    <input
+      class="search-input"
+      value="{{keyword}}"
+      bindinput="onInput"
+      bindconfirm="onConfirm"
+      placeholder="搜考点、采分点、法条、论述模板"
+      placeholder-class="ph"
+      confirm-type="search"
+      focus
+    />
+  </view>
+
+  <!-- 未搜索：热搜 + 历史 -->
+  <block wx:if="{{!searched}}">
+    <view class="sec">
+      <text class="sec-title">高频考点词</text>
+      <view class="word-wrap">
+        <text
+          wx:for="{{hotWords}}"
+          wx:key="*this"
+          class="word-chip"
+          bindtap="onHotTap"
+          data-kw="{{item}}"
+        >{{item}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{history.length}}" class="sec">
+      <view class="flex-between">
+        <text class="sec-title">搜索历史</text>
+        <text class="text-xs text-3" bindtap="onClearHistory">清空</text>
+      </view>
+      <view class="word-wrap">
+        <text
+          wx:for="{{history}}"
+          wx:key="*this"
+          class="word-chip gray"
+          bindtap="onHistoryTap"
+          data-kw="{{item}}"
+        >{{item}}</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 搜索结果 -->
+  <block wx:else>
+    <view wx:if="{{cards.length === 0 && essays.length === 0}}" class="empty-box">
+      <text>没有找到「{{keyword}}」相关的考点</text>
+    </view>
+
+    <block wx:if="{{cards.length}}">
+      <view class="sec-head">
+        <text class="sec-title">考点（{{cards.length}}）</text>
+      </view>
+      <view
+        wx:for="{{cards}}"
+        wx:key="id"
+        class="result-item"
+        bindtap="onCardTap"
+        data-id="{{item.id}}"
+      >
+        <view class="flex-between">
+          <text class="ri-subject" style="background:{{item.subjectColor}}22;color:{{item.subjectColor}}">{{item.subjectShort}}</text>
+          <text class="text-xs text-3">{{item.chapter}}</text>
+        </view>
+        <text class="ri-title">{{item.title}}</text>
+        <text class="ri-core">{{item.core}}</text>
+      </view>
+    </block>
+
+    <block wx:if="{{essays.length}}">
+      <view class="sec-head">
+        <text class="sec-title">论述模板（{{essays.length}}）</text>
+      </view>
+      <view
+        wx:for="{{essays}}"
+        wx:key="id"
+        class="result-item"
+        bindtap="onEssayTap"
+        data-id="{{item.id}}"
+      >
+        <text class="ri-subject">{{item.topic}}</text>
+        <text class="ri-title">{{item.title}}</text>
+      </view>
+    </block>
+  </block>
+</view>
