@@ -32,8 +32,11 @@
 }
 
 @layer base {
+  /* 高度链必须完整：App 容器用 h-full（height:100%），
+     缺 #root 高度会导致整棵布局塌陷（内容区 h=0，只剩 TabBar） */
   html,
-  body {
+  body,
+  #root {
     height: 100%;
     overscroll-behavior-y: none; /* 禁用整页下拉刷新观感 */
   }
