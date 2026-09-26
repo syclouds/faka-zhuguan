@@ -11,10 +11,17 @@ import studyCivilProc from '../../../shared/data/study-civil-proc.js';
 import studyAdmin from '../../../shared/data/study-admin.js';
 import studyCommercial from '../../../shared/data/study-commercial.js';
 import essayTemplates from '../../../shared/data/essay-templates.js';
-import mnemonicsRaw from '../../../shared/data/mnemonics-crim-proc.js';
+import mnemonicsCrimProc from '../../../shared/data/mnemonics-crim-proc.js';
+import mnemonicsRuleLaw from '../../../shared/data/mnemonics-rule-law.js';
+import mnemonicsCommercial from '../../../shared/data/mnemonics-commercial.js';
+import mnemonicsCivil from '../../../shared/data/mnemonics-civil.js';
+import mnemonicsCivilProc from '../../../shared/data/mnemonics-civil-proc.js';
+import mnemonicsCriminal from '../../../shared/data/mnemonics-criminal.js';
+import mnemonicsAdmin from '../../../shared/data/mnemonics-admin.js';
 import casesCivilRaw from '../../../shared/data/cases-civil.js';
 import casesCrimProcRaw from '../../../shared/data/cases-crim-proc.js';
 import casesRuleLawRaw from '../../../shared/data/cases-rule-law.js';
+import casesCommercialRaw from '../../../shared/data/cases-commercial.js';
 import questionTypesRaw from '../../../shared/data/question-types.js';
 import clauseIndexRaw from '../../../shared/data/clause-index.js';
 import type {
@@ -71,11 +78,20 @@ export const ALL_CARDS: CardItem[] = SUBJECTS.flatMap((s) =>
 
 /* ---------- 口诀 / 案例 / 模板 / 索引（T03 内容批次填充） ---------- */
 
-export const MNEMONICS: MnemonicCard[] = (mnemonicsRaw as MnemonicCard[]) || [];
+export const MNEMONICS: MnemonicCard[] = [
+  ...((mnemonicsCrimProc as MnemonicCard[]) || []),
+  ...((mnemonicsRuleLaw as MnemonicCard[]) || []),
+  ...((mnemonicsCommercial as MnemonicCard[]) || []),
+  ...((mnemonicsCivil as MnemonicCard[]) || []),
+  ...((mnemonicsCivilProc as MnemonicCard[]) || []),
+  ...((mnemonicsCriminal as MnemonicCard[]) || []),
+  ...((mnemonicsAdmin as MnemonicCard[]) || [])
+];
 export const CASES: CaseCard[] = [
   ...((casesCivilRaw as CaseCard[]) || []),
   ...((casesCrimProcRaw as CaseCard[]) || []),
-  ...((casesRuleLawRaw as CaseCard[]) || [])
+  ...((casesRuleLawRaw as CaseCard[]) || []),
+  ...((casesCommercialRaw as CaseCard[]) || [])
 ];
 export const ESSAYS: EssayTemplate[] = (essayTemplates as EssayTemplate[]) || [];
 export const QUESTION_TYPES: QuestionTypeEntry[] = (questionTypesRaw as QuestionTypeEntry[]) || [];
