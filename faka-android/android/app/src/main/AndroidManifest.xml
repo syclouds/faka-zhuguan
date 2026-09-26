@@ -38,5 +38,8 @@
     </application>
 
     <!-- Permissions -->
+    <!-- Android WebView 硬约束：渲染任何页面（含本地拦截资源）都必须声明 INTERNET 权限。
+         本应用不发起任何网络请求（内容全内置、无热更新），此权限仅为 WebView 启动前提。 -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
