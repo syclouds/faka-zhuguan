@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          # package-lock.json 已入库，npm ci 按 lockfile 精确安装（缓存走 npm）
+          # package-lock.json 已入库，npm install 按 lockfile 精确安装（缓存走 npm）
           cache: 'npm'
           cache-dependency-path: faka-android/package-lock.json
 
